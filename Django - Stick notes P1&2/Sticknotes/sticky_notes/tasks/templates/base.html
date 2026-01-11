@@ -1,0 +1,32 @@
+<!-- Creating a template layout for the sticky notes application -->
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Sticky Notes Application</title>
+        <link rel="stylesheet" href="{% static 'tasks/style.css' %}">
+    </head>
+    <body>
+        <header>
+            <h1>Welcome to the Sticky Notes Application</h1>
+        </header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'task_list' %}">Tasks</a></li>
+                <li><a href="{% url 'todo_list' %}">To-Do List</a></li>
+            </ul>
+        </nav>
+        <main>
+            {% block content %}
+            <!-- Content from child templates will be injected here -->
+            {% endblock %}
+        </main>
+        <footer>
+            <p>&copy; 2026 Sticky Notes Application</p>
+        </footer>
+    </body>
+</html>

@@ -1,0 +1,78 @@
+<!--- HTML template for the home page showing both tasks and todos --->
+
+{% extends "base.html" %}
+
+{% block content %}
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; align-items: start;">
+    
+    <!-- Tasks Section (Left) -->
+    <div>
+      <h1 style="text-align: left;">Task List</h1>
+      <a href="{% url 'task_create' %}">Add New Task</a>
+      
+      {% if tasks %}
+        <ul style="display: block;">
+          {% for task in tasks %}
+            <li style="margin-bottom: 20px;">
+              <strong>{{ task.title }}</strong>
+              <span style="float: right; background: rgba(0,0,0,0.1); padding: 3px 8px; border-radius: 10px; font-size: 0.8em;">{{ task.get_priority_display }}</span>
+              <br>
+              <small>📁 {{ task.get_category_display }}</small>
+              {% if task.due_date %}
+              <small> | 📅 Due: {{ task.due_date|date:"d M Y" }}</small>
+              {% endif %}
+              <br>
+              {{ task.description|truncatewords:15 }}
+              <br>
+              <small>Created: {{ task.entry_date|date:"d M Y" }} | Author: {{ task.author }}</small>
+              {% if task.completed %}
+                <span style="color: #2ecc71; font-weight: bold;">✓ Completed</span>
+              {% else %}
+                <span style="color: #e74c3c; font-weight: bold;">○ Pending</span>
+              {% endif %}
+              <br>
+              <a href="{% url 'task_detail' task.pk %}">View</a> | 
+              <a href="{% url 'task_edit' task.pk %}">Edit</a> | 
+              <a href="{% url 'task_delete' task.pk %}">Delete</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No tasks yet. Create one!</p>
+      {% endif %}
+    </div>
+    
+    <!-- Todo List Section (Right) -->
+    <div>
+      <h1 style="text-align: left;">To-Do List</h1>
+      <a href="{% url 'todo_create' %}">Create New To-Do</a>
+      
+      {% if todos %}
+        <ul style="display: block;">
+          {% for todo in todos %}
+            <li style="margin-bottom: 20px;">
+              <strong>{{ todo.title }}</strong>: {{ todo.entry }}
+              <br>
+              <small>Due: {{ todo.estimated_due_date|date:"d M Y" }} | Author: {{ todo.author }}</small>
+              {% if todo.is_completed %}
+                <span style="color: #2ecc71; font-weight: bold;">✓ Completed</span>
+              {% else %}
+                <span style="color: #e74c3c; font-weight: bold;">○ Pending</span>
+              {% endif %}
+              <br>
+              <a href="{% url 'todo_detail' todo.pk %}">View</a> | 
+              <a href="{% url 'todo_edit' todo.pk %}">Edit</a> | 
+              {% if not todo.is_completed %}
+              <a href="{% url 'todo_mark_completed' todo.pk %}">Mark as Complete</a> | 
+              {% endif %}
+              <a href="{% url 'todo_delete' todo.pk %}">Delete</a>
+            </li>
+          {% endfor %}
+        </ul>
+      {% else %}
+        <p>No to-do items yet. Create one!</p>
+      {% endif %}
+    </div>
+    
+  </div>
+{% endblock %}

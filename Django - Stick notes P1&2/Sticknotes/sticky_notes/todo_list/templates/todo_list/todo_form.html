@@ -1,0 +1,12 @@
+<!--HTML template for creating and updating a todo list-->
+
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>{% if form.instance.pk %}Edit Todo List{% else %}Create a New Todo List{% endif %}</h1>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% if form.instance.pk %}Update Todo List{% else %}Save Todo List{% endif %}</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,30 @@
+<!-- HTML template for displaying the details of a single task -->
+
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Task Details</h1>
+  <h2>{{ task.title }}</h2>
+  <p><strong>Description:</strong><br>{{ task.description }}</p>
+  <p><strong>Author:</strong> {{ task.author }}</p>
+  <p><strong>Created:</strong> {{ task.entry_date|date:"d M Y H:i" }}</p>
+  {% if task.due_date %}
+  <p><strong>Due Date:</strong> {{ task.due_date|date:"d M Y" }}</p>
+  {% endif %}
+  <p><strong>Priority:</strong> {{ task.get_priority_display }}</p>
+  <p><strong>Category:</strong> {{ task.get_category_display }}</p>
+  <p><strong>Status:</strong> 
+    {% if task.completed %}
+      <span style="color: #2ecc71; font-weight: bold;">✓ Completed</span>
+    {% else %}
+      <span style="color: #e74c3c; font-weight: bold;">○ Pending</span>
+    {% endif %}
+  </p>
+  
+  <a href="{% url 'task_edit' task.pk %}">Edit Task</a>
+  {% if not task.completed %}
+  <a href="{% url 'task_mark_completed' task.pk %}">Mark as Complete</a>
+  {% endif %}
+  <a href="{% url 'task_delete' task.pk %}">Delete Task</a>
+  <a href="{% url 'task_list' %}">Back to Task List</a>
+{% endblock %}

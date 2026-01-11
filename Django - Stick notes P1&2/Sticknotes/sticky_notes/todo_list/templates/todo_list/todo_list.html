@@ -1,0 +1,34 @@
+<!-- HTML template for displaying the list of todo items -->
+
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>To-Do List</h1>
+  <a href="{% url 'todo_create' %}">Create New To-Do</a>
+  
+  {% if todos %}
+    <ul>
+      {% for todo in todos %}
+        <li>
+          <strong>{{ todo.title }}</strong>: {{ todo.entry }}
+          <br>
+          <small>Due: {{ todo.estimated_due_date|date:"d M Y" }} | Author: {{ todo.author }}</small>
+          {% if todo.is_completed %}
+            <span style="color: green;">(Completed)</span>
+          {% else %}
+            <span style="color: red;">(Pending)</span>
+          {% endif %}
+          <br>
+          <a href="{% url 'todo_detail' todo.pk %}">View</a> | 
+          <a href="{% url 'todo_edit' todo.pk %}">Edit</a> | 
+          {% if not todo.is_completed %}
+          <a href="{% url 'todo_mark_completed' todo.pk %}">Mark as Complete</a> | 
+          {% endif %}
+          <a href="{% url 'todo_delete' todo.pk %}">Delete</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No to-do items yet. Create one!</p>
+  {% endif %}
+{% endblock %}

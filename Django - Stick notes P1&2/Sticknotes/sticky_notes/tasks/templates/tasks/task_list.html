@@ -1,0 +1,39 @@
+<!--- HTML template for displaying the list of tasks --->
+
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>Task List</h1>
+  <a href="{% url 'task_create' %}">Add New Task</a>
+  
+  {% if tasks %}
+    <ul>
+      {% for task in tasks %}
+        <li>
+          <strong>{{ task.title }}</strong>
+          <span style="float: right; background: rgba(0,0,0,0.1); padding: 3px 8px; border-radius: 10px; font-size: 0.8em;">{{ task.get_priority_display }}</span>
+          <br>
+          <small>📁 {{ task.get_category_display }}</small>
+          {% if task.due_date %}
+          <small> | 📅 Due: {{ task.due_date|date:"d M Y" }}</small>
+          {% endif %}
+          <br>
+          {{ task.description|truncatewords:15 }}
+          <br>
+          <small>Created: {{ task.entry_date|date:"d M Y" }} | Author: {{ task.author }}</small>
+          {% if task.completed %}
+            <span style="color: #2ecc71; font-weight: bold;">✓ Completed</span>
+          {% else %}
+            <span style="color: #e74c3c; font-weight: bold;">○ Pending</span>
+          {% endif %}
+          <br>
+          <a href="{% url 'task_detail' task.pk %}">View</a> | 
+          <a href="{% url 'task_edit' task.pk %}">Edit</a> | 
+          <a href="{% url 'task_delete' task.pk %}">Delete</a>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>No tasks yet. Create one!</p>
+  {% endif %}
+{% endblock %}

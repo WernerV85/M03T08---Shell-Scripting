@@ -1,0 +1,23 @@
+<!-- HTML template for displaying the details of a single todo list -->
+
+{% extends "base.html" %}
+
+{% block content %}
+  <h1>To-Do Details</h1>
+  <h2>{{ todo.title }}</h2>
+  <p><strong>Entry:</strong> {{ todo.entry }}</p>
+  <p><strong>Due Date:</strong> {{ todo.estimated_due_date|date:"d M Y" }}</p>
+  <p><strong>Author:</strong> {{ todo.author }}</p>
+  <p><strong>Status:</strong> 
+    {% if todo.is_completed %}
+      <span style="color: green;">Completed</span>
+    {% else %}
+      <span style="color: red;">Pending</span>
+    {% endif %}
+  </p>
+  
+  <a href="{% url 'todo_edit' todo.pk %}">Edit</a> | 
+  <a href="{% url 'todo_mark_completed' todo.pk %}">Mark as Completed</a> | 
+  <a href="{% url 'todo_delete' todo.pk %}">Delete</a> | 
+  <a href="{% url 'todo_list' %}">Back to To-Do List</a>
+{% endblock %}
